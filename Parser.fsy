@@ -1,0 +1,21 @@
+%{
+  open AST
+%}
+
+%start Stmt
+%token <string> ID
+%token COLON LBRACE RBRACE EOF
+%type <Stmt> Stmt
+
+%%
+
+Stmt: LabeledStmt { $1 }
+    | CompoundStmt { $1 }
+
+LabeledStmt: ID COLON { LabeledStmt($1) }
+
+CompoundStmt: LBRACE RBRACE { CompoundStmt([]) }
+            | LBRACE StmtList RBRACE { CompoundStmt($2) }
+
+StmtList: Stmt { [$1] }
+        | StmtList Stmt { $1 @ [$2] }

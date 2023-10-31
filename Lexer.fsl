@@ -1,0 +1,10 @@
+{
+}
+
+
+rule token = parse
+| ":"                { Parser.COLON }
+| "{"                { Parser.LBRACE }
+| "}"                { Parser.RBRACE }
+| ['a'-'z''A'-'Z']+  { Parser.ID(System.Text.Encoding.ASCII.GetString(lexbuf.Lexeme)) }
+| eof                { Parser.EOF}
